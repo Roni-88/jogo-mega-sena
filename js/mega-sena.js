@@ -1,9 +1,25 @@
 var estado = {quadro: [], jogoAtual: [], jogosSalvos: []}
 
 function comeco () {
+    lerLocalStorage ()
     criarQuadro ()
     novoJogo ()
+}
 
+function lerLocalStorage () {
+    if (!window.localStorage) {
+        return
+    }
+
+    var jogosSalvosLocalStorage = window.localStorage.getItem ('jogos-salvos')
+
+    if (jogosSalvosLocalStorage) {
+        estado.jogosSalvos = JSON.parse (jogosSalvosLocalStorage)
+    }
+}
+
+function escreverParaLocalStorage () {
+    window.localStorage.setItem ('jogos-salvos', JSON.stringify (estado.jogosSalvos))
 }
 
 function criarQuadro () {
@@ -168,8 +184,7 @@ function salvarJogo () {
         return
     }
     estado.jogosSalvos.push (estado.jogoAtual)
-
-    console.log (estado.jogoAtual)
+    escreverParaLocalStorage ()
     novoJogo ()
 }
 
