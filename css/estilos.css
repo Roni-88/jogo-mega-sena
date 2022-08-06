@@ -1,5 +1,56 @@
+h1 {
+    color: blue;
+    text-decoration: underline;
+}
+
 body {
     padding: 10px;
     font-family: Arial, Helvetica, sans-serif;
     background-color: lightskyblue;
+}
+
+button {
+    cursor: pointer;
+    font-weight: bolder;
+    color: blue;
+    border: 1px solid;
+    box-shadow: dodgerblue -2px 2px 3px;
+    border-radius: 10px;
+    margin: 20px 40px 0 95px;
+    padding: 5px 20px;
+}
+
+button:hover {
+    scale: 1.2;
+}
+
+.numeros {
+    border: 1px solid blue;
+    color: blue;
+    list-style-type: none;
+    font-weight: bolder;
+    padding: 15px;
+    font-size: 25px;
+    text-align: center;
+}
+
+.numero {
+    display: inline-block;
+    margin: 8px;
+    padding-top: 15px;
+    border: 1px solid;
+    width: 60px;
+    border-radius: 50%;
+    height: 45px;
+    background-color: dodgerblue;
+    cursor: pointer;
+    user-select: none;
+}
+
+.numero:hover {
+    color: #fff;
+}
+
+.numero-selecionado {
+    background-color: chartreuse;
 }

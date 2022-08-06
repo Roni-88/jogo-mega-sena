@@ -9,15 +9,14 @@ function comeco () {
 function criarQuadro () {
     estado.quadro = []
 
-    for (var i = 1; i <= 60; i++)
+    for (var i = 1; i <= 60; i++) {
     estado.quadro.push(i)
+    }
 }
 
 function novoJogo () {
     resetarJogo ()
     render ()
-
-    console.log (estado.jogoAtual)
 }
 
 function render () {
@@ -31,14 +30,20 @@ function renderQuadro () {
     divQuadro.innerHTML = ''
 
     var ulNumeros = document.createElement ('ul')
+    ulNumeros.classList.add ('numeros')
 
-    for (var i = 0; i < estado.quadro.length; i++){
+    for (var i = 0; i < estado.quadro.length; i++) {
     var numeroAtual = estado.quadro [i]
 
     var liNumero = document.createElement('li')
     liNumero.textContent = numeroAtual
+    liNumero.classList.add ('numero')
 
     liNumero.addEventListener ('click', fazendoClique)
+
+    if (numeroNoJogo (numeroAtual)) {
+        liNumero.classList.add ('numero-selecionado')
+    }
 
     ulNumeros.appendChild (liNumero)
     }
@@ -49,19 +54,19 @@ function renderQuadro () {
 function fazendoClique (event) {
     var valor = Number (event.currentTarget.textContent)
     
-    if (numeroNoJogo(valor)){
+    if (numeroNoJogo(valor)) {
     removerNumero (valor)
     } else {
         adicionarNumeroAoJogo (valor)
     }
-    console.log (estado.jogoAtual)
+    render ()
 }
 
 function renderBotoes() {
     var divBotoes = document.querySelector ('#botoes')
     divBotoes.innerHTML = ''
 
-    var botaoNovoJogo = criarNovoJogoBotao ()
+    var botaoNovoJogo = criarBotaoNovoJogo ()
     var botaoJogoAleatorio = criarBotaoJogoAleatorio ()
     var botaoSalvarJogo = criarBotaoSalvarJogo()
 
@@ -79,7 +84,7 @@ function criarBotaoJogoAleatorio () {
     return botao
 }
 
-function criarNovoJogoBotao () {
+function criarBotaoNovoJogo () {
     var botao = document.createElement ('button')
     botao.textContent = 'Novo Jogo'
 
@@ -91,6 +96,7 @@ function criarNovoJogoBotao () {
 function criarBotaoSalvarJogo () {
     var botao = document.createElement ('button')
     botao.textContent = 'Salvar Jogo'
+    botao.disabled = !jogoCompleto ()
 
     botao.addEventListener ('click', salvarJogo)
 
@@ -98,7 +104,24 @@ function criarBotaoSalvarJogo () {
 }
 
 function renderSalvos () {
+    var divJogosSalvos = document.querySelector ('#salvos')
+    divJogosSalvos.innerHTML = ''
 
+    if(estado.jogosSalvos.length=== 0) {
+        divJogosSalvos.innerHTML= '<p>Nenhum jogo salvo!</p>'
+    } else {
+        var ulJogosSalvos = document.createElement ('ul')
+
+        for (var i = 0; i < estado.jogosSalvos.length; i++) {
+            var jogoAtual = estado.jogosSalvos [i]
+
+            var liJogo = document.createElement ('li')
+            liJogo.textContent = jogoAtual.join (', ')
+
+            ulJogosSalvos.appendChild (liJogo)
+        }
+        divJogosSalvos.appendChild (ulJogosSalvos)
+    }
 }
 
 function adicionarNumeroAoJogo (numeroParaAdicionar) {
@@ -140,7 +163,7 @@ function numeroNoJogo (checarNumero) {
 }
 
 function salvarJogo () {
-    if (jogoCompleto ()) {
+    if (!jogoCompleto ()) {
         console.error ('O jogo não está completo!')
         return
     }
@@ -165,7 +188,7 @@ function jogoAleatorio() {
     var numeroAleatorio = Math.ceil (Math.random () * 60)
         adicionarNumeroAoJogo (numeroAleatorio)
     }
-    console.log (estado.jogoAtual)
+    render ()
 }
 
 comeco()
